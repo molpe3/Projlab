@@ -8,7 +8,7 @@ public class Panda extends Animal implements Observer, Steppable {
 	public boolean CollideWithPanda(Panda p){		
 		return false;
 	}
-	public boolean CollideWithOrangutan(Orangutan o){
+	public boolean CollideWithOrangutan(Orangutan o){	//csak akkor kapódjon el, ha az o.stepssinceletgo>3
 		if (puller==null){
 			CaughtbyOrangutan(o);
 			return true;
