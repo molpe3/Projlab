@@ -1,12 +1,12 @@
 import java.util.Random;
-public class ChocolateMachine extends Thing{
-	public void Whistle() {
+public class SlotMachine extends Thing {
+	public void Jingle() {
 		Notify();
 	}
 	public void Step() {
 		Random rand=new Random();
-		if (rand.nextInt(1)<2) { //most még mindig csinálja, meg kell oldani, hogy a randomizálás ki/be kapcsolható legyen
-			Whistle();
+		if (rand.nextInt(1)<2) {	//most még mindig csinálja, randomizálás megoldani, hogy ki/be kapcsolható legyen
+			Jingle();
 		}
 	}
 	public void Notify() {
