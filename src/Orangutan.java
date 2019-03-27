@@ -1,10 +1,10 @@
 public class Orangutan extends Animal {
 	private int points;
-	private int stepssinceletgo;
+	private int stepssincerobbed;
 	public void Addpoint() {
 		points++;}
 	public void Move(int side) {
-		stepssinceletgo++;
+		stepssincerobbed++;
 		Tile t2=tile.GetNeighbor(side);
 		if (t2.AcceptOrangutan(this)) {	
 			tile.RemoveAnimal();
@@ -20,12 +20,12 @@ public class Orangutan extends Animal {
 			p.CaughtbyOrangutan(this);
 			return false;
 		}
-	public boolean CollideWithOrangutan(Orangutan o){ //itt kell megoldani a sorrabl·st
+	public boolean CollideWithOrangutan(Orangutan o){ //itt kell megoldani a sorrabl√°st
 		return false;
 	}
 	public void LetGo()
 	{
-		stepssinceletgo=0;
+		stepssincerobbed=0;
 		Disband();
 	}
 }
