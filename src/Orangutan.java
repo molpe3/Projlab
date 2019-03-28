@@ -25,7 +25,6 @@ public class Orangutan extends Animal {
 	}
 	public void LetGo()
 	{
-		stepssincerobbed=0;
 		Disband();
 	}
 }
