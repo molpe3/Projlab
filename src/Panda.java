@@ -3,6 +3,10 @@ import java.util.Random;
 public class Panda extends Animal implements Observer, Steppable {
 	protected Animal puller;
 	private ArrayList<Observable> observables;
+	public Panda(String name)
+	{
+		this.name=name;
+	}
 	public void Move(int side) {}
 	
 	public boolean CollideWithPanda(Panda p){		
@@ -60,5 +64,9 @@ public class Panda extends Animal implements Observer, Steppable {
 		if (pulled!=null) {
 			pulled.Disband();
 		}
+	}
+	public void Print()
+	{
+		
 	}
 }

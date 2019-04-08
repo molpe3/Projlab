@@ -1,6 +1,9 @@
 import java.util.Random;
 
 public class JumpingPanda extends Panda{
+	public JumpingPanda(String name) {
+		super(name);
+	}
 	public void Jump(){
 		tile.JumpedOn();
 	}
@@ -19,5 +22,17 @@ public class JumpingPanda extends Panda{
 		{
 			Jump();
 		}
+	}
+	public void Print()
+	{
+		System.out.println("\t"+this.name);
+		System.out.println("\tCsempe:");
+		System.out.println("\t\t"+tile.GetName());
+		System.out.println("\tHúzó állat:");
+		if (puller!=null)
+			System.out.println("\t\t"+puller.GetName());
+		System.out.println("\tHúzott panda:");
+		if (pulled!=null)
+			System.out.println("\t\t"+pulled.GetName());
 	}
 }

@@ -1,6 +1,7 @@
-public abstract class Animal {
+public abstract class Animal implements Printable{
 	protected Panda pulled;
 	protected Tile tile;
+	protected String name;
 	
 	public void Fall() {
 		Destroy();
@@ -37,5 +38,9 @@ public abstract class Animal {
 	}
 	public void SetTile(Tile t) {
 		tile=t;
+	}
+	public String GetName()
+	{
+		return name;
 	}
 }
