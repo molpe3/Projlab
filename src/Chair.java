@@ -1,7 +1,7 @@
 
 public class Chair extends Thing {
 	private boolean occupied;
-	public void Step() {	//randomiz·l·st megcsin·lni, ki-be kapcsolhatÛ legyen
+	public void Step() {	//randomiz√°l√°st megcsin√°lni, ki-be kapcsolhat√≥ legyen
 		if (!occupied) {
 			Notify();
 		}
@@ -13,6 +13,9 @@ public class Chair extends Thing {
 	}
 	public boolean GetOccupied() {
 		return occupied;
+	}
+	public void SetOccupied(boolean occupied){
+		this.occupied=occupied;
 	}
 	public void Detach(Observer o) {
 		observers.remove(o);
