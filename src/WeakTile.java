@@ -11,7 +11,6 @@ public class WeakTile extends Tile {
 			Break();
 		}
 	}
-	
 	public void Break() {
 		broken=true;
 		if (animal!=null)
@@ -20,18 +19,28 @@ public class WeakTile extends Tile {
 	public boolean AcceptPanda(Panda p) {
 		if (animal!=null) {
 			animal.CollideWithPanda(p);
+			p.tile=this;
+			animal=p;
+			Damage(1);
 			return false;
 		}
+		p.tile=this;
+		animal=p;
 		Damage(1);
 		return true;
 	}
 	public boolean AcceptOrangutan(Orangutan o) {
 		if (animal!=null){
 			if (animal.CollideWithOrangutan(o)==true) {
+				o.tile=this;
+				animal=o;
 				Damage(1);
 			}
 		return false;	
 		}
+		o.tile=this;
+		animal=o;
+		Damage(1);
 		return true;
 	}
 	public void JumpedOn() {

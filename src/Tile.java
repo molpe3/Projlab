@@ -3,7 +3,7 @@ import java.util.Hashtable;
 import java.util.Map;
 public class Tile implements Printable {
 	private int sides=0;
-	protected Hashtable<Integer,Tile> neighbors=null;
+	protected Hashtable<Integer,Tile> neighbors;
 	protected Animal animal=null;
 	protected Thing thing=null;
 	protected String name;
@@ -27,7 +27,7 @@ public class Tile implements Printable {
 		return true;
 	}
 	public void RemoveAnimal() {
-		this.animal=null;
+		animal=null;
 	}
 	public void JumpedOn() {}
 	public Tile GetNeighbor(int side) {
@@ -39,7 +39,6 @@ public class Tile implements Printable {
 	public int CompareTile(Tile t) {
         if (this.equals(t)) 
         	return -1;
-        //Find tile:
         for(Map.Entry<Integer,Tile> it : neighbors.entrySet()) {
             if(t.equals( it.getValue() )) {
                 return it.getKey();

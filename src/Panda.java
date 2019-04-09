@@ -6,9 +6,19 @@ public class Panda extends Animal implements Observer, Steppable {
 	public Panda(String name)
 	{
 		this.name=name;
+		observables=new ArrayList<Observable>();
 	}
-	public void Move(int side) {}
-	
+	public void Move(int side) {
+		Tile t2=tile.GetNeighbor(side);
+		if (t2.AcceptPanda(this)) {	
+			tile.RemoveAnimal();
+			if (pulled!=null) {
+				Tile t3=pulled.GetTile();
+				int a=tile.CompareTile(t3);
+				pulled.Move(a);
+			}
+		}
+	}
 	public boolean CollideWithPanda(Panda p){		
 		return false;
 	}
@@ -44,6 +54,7 @@ public class Panda extends Animal implements Observer, Steppable {
 		if (pulled!=null) {
 			Disband();
 		}
+		tile.RemoveAnimal();
 		Game.getInstance().DeleteAnimal(this);
 	}
 	
