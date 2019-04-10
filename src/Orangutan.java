@@ -15,7 +15,6 @@ public class Orangutan extends Animal {
 		stepssincerobbed++;
 		Tile t2=tile.GetNeighbor(side);
 		if (t2.AcceptOrangutan(this)) {	
-			tile.RemoveAnimal();
 			if (pulled!=null) {
 				Tile t3=pulled.GetTile();
 				int a=tile.CompareTile(t3);
@@ -32,11 +31,14 @@ public class Orangutan extends Animal {
 	}
 	public void LetGo()
 	{
-		stepssincerobbed=0;
 		Disband();
 	}
 	public int GetPoints() {
 		return points;
+	}
+	public void SetPoints(int points)
+	{
+		this.points=points;
 	}
 	public void Print()
 	{

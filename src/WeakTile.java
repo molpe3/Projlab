@@ -7,7 +7,7 @@ public class WeakTile extends Tile {
 	private boolean broken=false;
 	public void Damage (int n) {
 		steps+=n;
-		if (steps>=20) {
+		if (steps>=20||broken) {
 			Break();
 		}
 	}
@@ -24,6 +24,7 @@ public class WeakTile extends Tile {
 			Damage(1);
 			return false;
 		}
+		p.tile.RemoveAnimal();
 		p.tile=this;
 		animal=p;
 		Damage(1);
@@ -38,6 +39,7 @@ public class WeakTile extends Tile {
 			}
 		return false;	
 		}
+		o.tile.RemoveAnimal();
 		o.tile=this;
 		animal=o;
 		Damage(1);
@@ -45,6 +47,7 @@ public class WeakTile extends Tile {
 	}
 	public void JumpedOn() {
 		Damage(5);
+		System.out.println("jumpedon");
 	}
 	public int GetSteps() {
 		return steps;

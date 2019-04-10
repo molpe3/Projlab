@@ -5,6 +5,7 @@ public class JumpingPanda extends Panda{
 		super(name);
 	}
 	public void Jump(){
+		System.out.println("jump");
 		tile.JumpedOn();
 	}
 	public void Step() {
@@ -14,13 +15,19 @@ public class JumpingPanda extends Panda{
 			Move(rand.nextInt(sides));
 		}
 	}
-	public void Update(ChocolateMachine ob) {
-		int side=tile.CompareTile(ob.GetTile());
-		if (side==-1)	//ugyanazon a csempén van a panda és a csokiautomata
-			Jump();
-		else if (side>0)	//szomszéd csempén vannak
+	
+	public void Update(Observable ob) {
+		System.out.println("asd");
+		if (ob.getClass()==ChocolateMachine.class)
 		{
-			Jump();
+			ChocolateMachine cm=(ChocolateMachine) ob;
+			int side=tile.CompareTile(cm.GetTile());
+			if (side==-1)	//ugyanazon a csempén van a panda és a csokiautomata
+				Jump();
+			else if (side>0)	//szomszéd csempén vannak
+			{
+				Jump();
+			}
 		}
 	}
 	public void Print()

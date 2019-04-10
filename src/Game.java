@@ -12,7 +12,7 @@ public final class Game implements Printable{
 	private Tile entrance;
 	
 	public void EndGame() {
-		System.out.println("Játék vége:");
+		System.out.println("Játék vége!");
 		orangutans.sort(Comparator.comparing(Orangutan::GetPoints));
 		int i=1;
 		for (Orangutan o:orangutans) {

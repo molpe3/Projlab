@@ -17,6 +17,9 @@ public class Tile implements Printable {
 			animal.CollideWithPanda(p);
 			return false;
 		}
+		p.tile.RemoveAnimal();
+		p.tile=this;
+		animal=p;
 		return true;
 	}
 	public boolean AcceptOrangutan(Orangutan o) {
@@ -24,6 +27,9 @@ public class Tile implements Printable {
 			animal.CollideWithOrangutan(o);
 			return false;
 		}
+		o.tile.RemoveAnimal();
+		o.tile=this;
+		animal=o;
 		return true;
 	}
 	public void RemoveAnimal() {

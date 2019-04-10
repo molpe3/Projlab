@@ -10,8 +10,7 @@ public class Panda extends Animal implements Observer, Steppable {
 	}
 	public void Move(int side) {
 		Tile t2=tile.GetNeighbor(side);
-		if (t2.AcceptPanda(this)) {	
-			tile.RemoveAnimal();
+		if (t2.AcceptPanda(this)) {		
 			if (pulled!=null) {
 				Tile t3=pulled.GetTile();
 				int a=tile.CompareTile(t3);
@@ -68,7 +67,9 @@ public class Panda extends Animal implements Observer, Steppable {
 	public void GetScared(){}
 	public void Jump(){}
 	public void Sit(){}
-	public void Update(Observable ob) {}
+	public void Update(Observable ob) {
+	
+	}
 	public void Disband(){
 		puller.SetPulled(null);
 		puller=null;
@@ -76,6 +77,7 @@ public class Panda extends Animal implements Observer, Steppable {
 			pulled.Disband();
 		}
 	}
+	
 	public void Print()
 	{
 		

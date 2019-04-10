@@ -36,6 +36,7 @@ public abstract class Animal implements Printable{
 	public void SetPulled(Panda p){
 		pulled=p;
 	}
+	
 	public void SetTile(Tile t) {
 		tile=t;
 	}
