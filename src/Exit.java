@@ -4,32 +4,33 @@ public class Exit extends Tile{
 		super(name);
 	}
 	private Tile entrance;
-	public boolean AcceptPanda(Panda p) {
-		if (animal!=null) {
-			animal.CollideWithPanda(p);
+	public boolean AcceptOrangutan(Orangutan o) {	//szkeleton kódból át kell írni
+		if (animal!=null){
+			animal.CollideWithOrangutan(o);
 			return false;
 		}
-		return true;
-		}
-	public boolean AcceptOrangutan(Orangutan o) {	//szkeleton kódból át kell írni
-		/*if(entrance.GetAnimal(entranceAnimal)!=null)return false;
-		tile.RemoveAnimal();
-		entrance.SetAnimal(o);
-		o.SetTile(entrance);
-		Panda temp1 = o.GetPulled(p1);
-		Panda temp2;
-		//while cikklus helyett
-		if(temp1!=null) {
-			o.Addpoint();
-			temp2 = temp1.GetPulled(p2);
-			if (p2 != null){
-				o.Addpoint();
+		o.tile.RemoveAnimal();
+		if (entrance.AcceptOrangutan(o)){
+			if (o.pulled!=null) {
+				Panda p=o.pulled;
+				while (p!=null) {
+					o.Addpoint();
+					p.Destroy();
+					p.GetTile().SetAnimal(null);
+					p.SetTile(null);
+					if (p.pulled!=null) {
+						p=p.pulled;
+					}
+					else {
+						p=null;
+					}
+				}
 			}
-			temp1.Destroy(panda1Tile,game,o,temp2,orangutans,pandas,observables,timer);
-			if (temp2!=null)temp2.Destroy(panda2Tile,game,null,null,orangutans,pandas,observables,timer);
-		}*/
-		return false;
-		
+			return true;
+		}
+		o.tile=this;
+		animal=o;
+		return true;
 	}	
 	public void Print() {
 		System.out.println("\t"+this.name);

@@ -10,7 +10,6 @@ public final class Game implements Printable{
 	private static ArrayList<Tile> tiles;
 	private static ArrayList<Thing> things;
 	private Tile entrance;
-	
 	public void EndGame() {
 		System.out.println("Játék vége!");
 		orangutans.sort(Comparator.comparing(Orangutan::GetPoints));
@@ -65,6 +64,12 @@ public final class Game implements Printable{
 	public Timer GetTimer() {
 		return timer;
 	}
+	public static ArrayList<Orangutan> GetActiveorangutans() {
+		return activeorangutans;
+	}
+	public static ArrayList<Panda> GetPandas() {
+		return pandas;
+	}
 	public void Print() {
 		System.out.println("Randomizálás:");
 		System.out.println("\tBe/ki");
@@ -89,7 +94,7 @@ public final class Game implements Printable{
 		}
 		System.out.println("Szekrények:");
 		for (Tile t:tiles) {
-			if (t.getClass()==Exit.class) {
+			if (t.getClass()==Wardrobe.class) {
 				t.Print();
 			}
 		}

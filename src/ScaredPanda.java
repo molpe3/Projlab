@@ -7,7 +7,8 @@ public class ScaredPanda extends Panda {
 		if (puller!=null)
 			Disband();	//Ha sorban volt, az felbomlik
 	}
-	public void Update(SlotMachine sm) {
+	public void Update(Observable o) {
+		SlotMachine sm=(SlotMachine) o;
 		int side=tile.CompareTile(sm.GetTile());
 		if (side==-1) //ha azonos csempén van a panda és a játékgép
 		{

@@ -13,20 +13,41 @@ public class Orangutan extends Animal {
 		points++;}
 	public void Move(int side) {
 		stepssincerobbed++;
+		Tile start=tile;
 		Tile t2=tile.GetNeighbor(side);
 		if (t2.AcceptOrangutan(this)) {	
 			if (pulled!=null) {
 				Tile t3=pulled.GetTile();
-				int a=tile.CompareTile(t3);
-				pulled.Move(a);
+				if (t3!=null) {
+					int a=t3.CompareTile(start);
+					pulled.Move(a);
+					if (!Game.GetActiveorangutans().contains(this)) {
+						Disband();
+					}
+				}
 			}
 		}
 	}
 	public boolean CollideWithPanda(Panda p){
-			p.CaughtbyOrangutan(this);
-			return false;
+		if (pulled==null) {
+			p.SetPuller(this);
+			pulled=p;
 		}
+		return true;
+	}
 	public boolean CollideWithOrangutan(Orangutan o){ //itt kell megoldani a sorrablást
+		
+		if (pulled!=null&&o.stepssincerobbed>3){
+			pulled.SetPuller(o);
+			o.SetPulled(pulled);
+			Tile t=tile;
+			Tile ot=o.GetTile();
+			o.SetTile(t);
+			t.SetAnimal(o);
+			tile=ot;
+			ot.SetAnimal(this);
+			stepssincerobbed=0;
+		}
 		return false;
 	}
 	public void LetGo()
@@ -39,6 +60,12 @@ public class Orangutan extends Animal {
 	public void SetPoints(int points)
 	{
 		this.points=points;
+	}
+	public int GetStepssincerobbed() {
+		return stepssincerobbed;
+	}
+	public void SetStepssincerobbed(int stepssincerobbed) {
+		this.stepssincerobbed = stepssincerobbed;
 	}
 	public void Print()
 	{

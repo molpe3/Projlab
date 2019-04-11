@@ -9,20 +9,24 @@ public class Panda extends Animal implements Observer, Steppable {
 		observables=new ArrayList<Observable>();
 	}
 	public void Move(int side) {
+		Tile start=tile;
 		Tile t2=tile.GetNeighbor(side);
 		if (t2.AcceptPanda(this)) {		
 			if (pulled!=null) {
 				Tile t3=pulled.GetTile();
-				int a=tile.CompareTile(t3);
+				int a=t3.CompareTile(start);
 				pulled.Move(a);
+				if (!Game.GetPandas().contains(this)) {
+					Disband();
+				}
 			}
 		}
 	}
 	public boolean CollideWithPanda(Panda p){		
 		return false;
 	}
-	public boolean CollideWithOrangutan(Orangutan o){	//csak akkor kapódjon el, ha az o.stepssinceletgo>3
-		if (puller==null){
+	public boolean CollideWithOrangutan(Orangutan o){
+		if (puller==null&&o.GetStepssincerobbed()>3){
 			CaughtbyOrangutan(o);
 			return true;
 			}
@@ -30,15 +34,19 @@ public class Panda extends Animal implements Observer, Steppable {
 		}
 	public  void CaughtbyOrangutan(Orangutan o){	
 		Tile oran_tile = o.GetTile();
-                Panda lead_panda = o.GetPulled();
-                o.SetPulled(this);
-                if (lead_panda != null)
-                        lead_panda.SetPuller(this);
-                o.SetTile(tile);
-                super.SetTile(oran_tile);
-                tile.SetAnimal(o);
-                oran_tile.SetAnimal(this);
+        Panda lead_panda = o.GetPulled();
+        o.SetPulled(this);
+        SetPuller(o);
+        if (lead_panda != null) {	
+        	lead_panda.SetPuller(this);
+        	this.SetPulled(lead_panda);
+        }
+        o.SetTile(tile);
+        tile.SetAnimal(o);
+        this.SetTile(oran_tile);
+        oran_tile.SetAnimal(this);
 	}
+	
 	public Animal GetPuller(){
 		return puller;
 	}
@@ -49,9 +57,6 @@ public class Panda extends Animal implements Observer, Steppable {
 		for (Observable o:observables){
 			o.Detach(this);
 			Game.getInstance().GetTimer().RemoveSteppable(this);	
-		}
-		if (pulled!=null) {
-			Disband();
 		}
 		tile.RemoveAnimal();
 		Game.getInstance().DeleteAnimal(this);

@@ -9,9 +9,6 @@ public abstract class Animal implements Printable{
 	public void Destroy(){
 		tile.RemoveAnimal();
 		Game.getInstance().DeleteAnimal(this);
-		if (pulled!=null) {
-			Disband();
-		}
 	}
 	public void Move(int side){
 		
