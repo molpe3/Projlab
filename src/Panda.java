@@ -9,9 +9,10 @@ public class Panda extends Animal implements Observer, Steppable {
 		observables=new ArrayList<Observable>();
 	}
 	public void Move(int side) {
+		
 		Tile start=tile;
 		Tile t2=tile.GetNeighbor(side);
-		if (t2.AcceptPanda(this)) {		
+		if (t2.AcceptPanda(this)) {	
 			if (pulled!=null) {
 				Tile t3=pulled.GetTile();
 				int a=t3.CompareTile(start);
@@ -63,6 +64,7 @@ public class Panda extends Animal implements Observer, Steppable {
 	}
 	
 	public void Step() {
+		//tiredpanda felülírja!!!!
 		Random rand=new Random();
 		if (puller==null) {	//randomizálás ki/be kapcsolható legyen
 			int sides=tile.GetSides();
@@ -76,7 +78,8 @@ public class Panda extends Animal implements Observer, Steppable {
 	
 	}
 	public void Disband(){
-		puller.SetPulled(null);
+		if (puller!=null)
+			puller.SetPulled(null);
 		puller=null;
 		if (pulled!=null) {
 			pulled.Disband();
