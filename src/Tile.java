@@ -1,90 +1,91 @@
-import java.util.ArrayList;
 import java.util.Hashtable;
 import java.util.Map;
+
 public class Tile implements Printable {
-	private int sides=0;
-	protected Hashtable<Integer,Tile> neighbors;
-	protected Animal animal=null;
-	protected Thing thing=null;
-	protected String name;
-	public Tile (String name)
-	{
-		this.name=name;
-		neighbors=new Hashtable<Integer,Tile>();
-	}
+	private int sides;
+	protected Hashtable<Integer, Tile> neighbors = new Hashtable<Integer, Tile>();
+	protected Animal animal;
+	protected Thing thing;
+	protected String name = "UNNAMED";
+
 	public boolean AcceptPanda(Panda p) {
-		if (animal!=null) {
-			animal.CollideWithPanda(p);
-			return false;
+		if (animal != null) {
+			return animal.CollideWithPanda(p);
+		} else {
+			return true;
 		}
-		p.tile.RemoveAnimal();
-		p.tile=this;
-		animal=p;
-		return true;
 	}
+
 	public boolean AcceptOrangutan(Orangutan o) {
-		if (animal!=null){
-			animal.CollideWithOrangutan(o);
-			return false;
+		if (animal != null) {
+			return animal.CollideWithOrangutan(o);
+		} else {
+			return true;
 		}
-		o.tile.RemoveAnimal();
-		o.tile=this;
-		animal=o;
-		return true;
 	}
-	public void RemoveAnimal() {
-		animal=null;
-	}
-	public void JumpedOn() {}
-	public Tile GetNeighbor(int side) {
-		return neighbors.get(side);
-	}
-	public int GetSides() {
-		return sides;
-	}
+
 	public int CompareTile(Tile t) {
-        if (this.equals(t)) 
-        	return -1;
-        for(Map.Entry<Integer,Tile> it : neighbors.entrySet()) {
-            if(t.equals( it.getValue() )) {
-                return it.getKey();
-            }
-        }
-        return 0;
-     }  
-	public void SetAnimal (Animal a) {
-		animal=a;
+		if (this.equals(t)) {
+			return -1;
+		}
+		for (Map.Entry<Integer, Tile> it : neighbors.entrySet()) {
+			if (t.equals(it.getValue())) {
+				return it.getKey();
+			}
+		}
+		return 0;
 	}
-	public Animal GetAnimal()
-	{
-		return animal;
-	}
-	public String GetName()
-	{
-		return name;
-	}
-	public void AddNeighbor(int side, Tile neighbor)
-	{
-		neighbors.put(side, neighbor);
-		sides++;
-	}
-	public void SetThing(Thing thing){
-		this.thing=thing;
-	}
+
 	public void Print() {
-		System.out.println("\t"+this.name);
+		System.out.println("\t" + this.name);
 		System.out.println("\tSzomszédok:");
 		if (!neighbors.isEmpty()) {
-			for (int key:neighbors.keySet()){
-				System.out.println("\t\t"+key+":"+neighbors.get(key).GetName());
+			for (int key : neighbors.keySet()) {
+				System.out.println("\t\t" + key + ":" + neighbors.get(key).GetName());
 			}
 		}
 		System.out.println("\tRajta lévo állat:");
-		if (animal!=null) {
-			System.out.println("\t\t"+animal.GetName()+":"+animal.getClass());
+		if (animal != null) {
+			System.out.println("\t\t" + animal.name + ":" + animal.getClass());
 		}
 		System.out.println("\tRajta lévo tárgy:");
-		if (thing!=null)
-			System.out.println("\t\t"+thing.GetName()+":"+thing.getClass());
+		if (thing != null)
+			System.out.println("\t\t" + thing.name + ":" + thing.getClass());
+	}
+
+	public void AddNeighbor(int side, Tile neighbor) {
+		neighbors.put(Integer.valueOf(side), neighbor);
+		sides++;
+	}
+
+	public void SetThing(Thing thing) {
+		this.thing = thing;
+	}
+
+	public String GetName() {
+		return name;
+	}
+
+	public Animal GetAnimal() {
+		return animal;
+	}
+
+	public void SetAnimal(Animal a) {
+		animal = a;
+	}
+
+	public int GetSides() {
+		return sides;
+	}
+
+	public Tile GetNeighbor(int side) {
+		return neighbors.get(Integer.valueOf(side));
+	}
+
+	public void RemoveAnimal() {
+		animal = null;
+	}
+
+	public void JumpedOn() {
 	}
 }

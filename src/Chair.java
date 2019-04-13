@@ -1,41 +1,48 @@
-
 public class Chair extends Thing {
-	public Chair(String name) {
-		super(name);
-	}
-	private boolean occupied;
-	public void Step() {	
-		if (!occupied) {
+	private boolean occupied = false;
+
+	public void Step() {
+		if (!occupied && GetTile().GetAnimal() == null) {
 			Notify();
 		}
 	}
+
 	public void Notify() {
-		for (Observer o:observers) {
+		for (Observer o : observers) {
 			o.Update(this);
 		}
 	}
-	public boolean GetOccupied() {
-		return occupied;
-	}
-	public void SetOccupied(boolean occupied) {
-		this.occupied=occupied;
-	}
-	
-	
+
 	public void Print() {
-		System.out.println("\t"+this.name);
+		System.out.println("\t" + this.name);
 		System.out.println("\tCsempe:");
-		System.out.println("\t\t"+tile.GetName()+":"+tile.getClass());
+		System.out.println("\t\t" + tile.name + ":" + tile.getClass());
 		System.out.println("\t¡llapot:");
-		if (occupied==true) {
+		if (occupied == true) {
 			System.out.println("\t\tfoglalt");
-		}
-		else {
+		} else {
 			System.out.println("\t\tszabad");
 		}
 		System.out.println("\tObserverek:");
-		for (Observer o:observers) {
-			System.out.println("\t\t"+o.GetName());
+		for (Observer o : observers) {
+			System.out.println("\t\t" + o.GetName());
 		}
+	}
+
+	@Override
+	public int AskForRandomNumber() {
+		return 0; // doesn't need a random number
+	}
+
+	public boolean GetOccupied() {
+		return occupied;
+	}
+
+	public void SetOccupied(boolean b) {
+		occupied = b;
+	}
+
+	public void Detach(Observer o) {
+		observers.remove(o);
 	}
 }
