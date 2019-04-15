@@ -4,7 +4,7 @@ public class Exit extends Tile{
 		super(name);
 	}
 	private Tile entrance;
-	public boolean AcceptOrangutan(Orangutan o) {	//szkeleton kódból át kell írni
+	public boolean AcceptOrangutan(Orangutan o) {	
 		if (animal!=null){
 			animal.CollideWithOrangutan(o);
 			return false;

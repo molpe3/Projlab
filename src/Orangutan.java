@@ -32,7 +32,7 @@ public class Orangutan extends Animal {
 		p.CaughtbyOrangutan(this);
 		return true;
 	}
-	public boolean CollideWithOrangutan(Orangutan o){ //itt kell megoldani a sorrablást
+	public boolean CollideWithOrangutan(Orangutan o){ 
 		
 		if (pulled!=null&&o.stepssincerobbed>3){
 			pulled.SetPuller(o);
