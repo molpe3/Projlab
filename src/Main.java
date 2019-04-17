@@ -1,15 +1,13 @@
-import java.io.BufferedReader;
-import java.io.BufferedWriter;
+import java.io.*;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashMap;
+
 
 //Ha legyszi hasznalod a Game konstruktorat protectedbe, es ne legyen final
 //TODO fuggvenyek
 public class Main extends Game{
-    protected static BufferedWriter out;
-	
-    protected static BufferedReader in;
-	
+
     public static void main(String[] args) {
         System.out.println("Hello World!");
     }
@@ -18,7 +16,11 @@ public class Main extends Game{
 
     private State state;
 
-    private String commandfile;
+    private ArrayList<String> commandfile;
+
+    private int commandindex=0;
+
+    public boolean usefile=true;
 
     private String answer;
 
@@ -65,13 +67,146 @@ public class Main extends Game{
 
     private ArrayList<Thing> MovingThings;
 
-    public void ExecuteState(){
 
+    public void ExecuteState(){
+        switch (state) {
+            case StageBuild:
+
+                break;
+            case Simulation:
+                break;
+            case RandomSimulation:
+                break;
+            case Cleanup:
+                break;
+        }
     }
     public void ST_Ask(){
-
+        //Todo usefile nélkül
+        if(!usefile)return;
     }
     public void ST_Answer(){
+        ReadCommand();
+        String[] parameters = answer.split(" ");
+        Double<Integer,State> d = Commands.get(parameters[0]);
+        if(d==null)return;
+        if (parameters.length!= d.first+1)return;
+
+        switch (parameters[0]){
+            case("CTile"):
+                CTile(parameters[1],Integer.parseInt(parameters[2]));
+                break;
+
+            case("CWardrobe"):
+                CWardrobe(parameters[1],Integer.parseInt(parameters[2]));
+                break;
+
+            case("CWeakTile"):
+                CWeakTile(parameters[1],Integer.parseInt(parameters[2]));
+                break;
+
+            case("CChair"):
+                CChair(parameters[1],parameters[2]);
+                break;
+
+            case("CChocolateMachine"):
+                CChocolateMachine(parameters[1],parameters[2]);
+                break;
+
+            case("CSlotMachine"):
+                CSlotMachine(parameters[1],parameters[2]);
+                break;
+
+            case("CExit"):
+                CExit(parameters[1],Integer.parseInt(parameters[2]));
+                break;
+
+            case("CPanda"):
+                CPanda(parameters[1],parameters[2]);
+                break;
+
+            case("CJumpingPanda"):
+                CJumpingPanda(parameters[1],parameters[2]);
+                break;
+
+            case("CScaredPanda"):
+                CScaredPanda(parameters[1],parameters[2]);
+                break;
+
+            case("CTiredPanda"):
+                CTiredPanda(parameters[1],parameters[2]);
+                break;
+
+            case("COrangutan"):
+                COrangutan(parameters[1],parameters[2]);
+                break;
+
+            case("SRandom"):
+                SRandom(Boolean.parseBoolean(parameters[1]));
+                break;
+
+            case("SConnect"):
+                Tile t1 = Tiles.get(parameters[1]);
+                int i1 = Integer.parseInt(parameters[2]);
+                Tile t2 = Tiles.get(parameters[3]);
+                int i2 = Integer.parseInt(parameters[4]);
+                SConnect(t1,i1,t2,i2);
+                break;
+
+            case("SWardrobeConnect"):
+                Wardrobe w1= (Wardrobe) Tiles.get(parameters[1]);
+                Wardrobe w2 = (Wardrobe) Tiles.get(parameters[2]);
+                SWardrobeConnect(w1,w2);
+                break;
+
+            case("SSubscribe"):
+                Panda p = (Panda) Animals.get(parameters[1]);
+                Thing t = Things.get(parameters[2]);
+                SSubscribe(p,t);
+                break;
+
+            case("SExitConnect"):
+                Exit e = (Exit) Tiles.get(parameters[1]);
+                Tile t3 = Tiles.get(parameters[2]);
+                SExitConnect(e,t3);
+                break;
+
+            case("SWeakTileSetLife"):
+                WeakTile wt = (WeakTile)Tiles.get(parameters[1]);
+                int i3 = Integer.parseInt(parameters[2]);
+                SWeakTileSetLife(wt,i3);
+                break;
+
+            case("SWeakTileSetBroken"):
+                WeakTile wt2 = (WeakTile)Tiles.get(parameters[1]);
+                boolean b = Boolean.parseBoolean(parameters[2]);
+                SWeakTileSetBroken(wt2,b);
+                break;
+
+            case("SOrangutanSetCooldown"):
+                Orangutan o = (Orangutan) Animals.get(parameters[1]);
+                int cooldown = Integer.parseInt(parameters[2]);
+                SOrangutanSetCooldown(o,cooldown);
+                break;
+
+            case("SOrangutanPoint"):
+                Orangutan o2 = (Orangutan) Animals.get(parameters[1]);
+                int point = Integer.parseInt(parameters[2]);
+                SOrangutanPoint(o2,point);
+                break;
+
+            case("STiredPandaTired"):
+                boolean tired = Boolean.parseBoolean(parameters[2]);
+                TiredPanda tp = (TiredPanda) Animals.get(parameters[1]);
+                STiredPandaTired(tp,tired);
+                break;
+
+            case("SSetPuller"):
+                Panda pulled = (Panda) Animals.get(parameters[1]);
+                Animal puller = Animals.get(parameters[2]);
+                SSetPuller(pulled,puller);
+                break;
+        }
 
     }
     public void SIAnimalAsk(){
@@ -92,20 +227,75 @@ public class Main extends Game{
     public void SIRThingAnswer(String type){
 
     }
-    public void IsLetGo(){
+    public void IsLetGo(Orangutan o){
+        if (!usefile) {
+            String name = "";
+            for (int i = 0; i < MovingOrangutans.size(); i++) {
+                if (MovingOrangutans.get(i).first == o) {
+                    for (Triple<String, Integer, Integer> t : MovingAnimals) {
+                        if (t.second == 1 || t.third == i) name = t.first;
+                    }
+                }
+            }
+            System.out.println("Let go of " + name + "?");
+            //TODO olvassd be a valaszt az answerbe
+        }
+        ReadCommand();
+        if (answer.equals("true")){
+            Panda a = o.pulled;
+            ArrayList<Panda> freepandas=new ArrayList<>();
+            while (a!=null){
+                freepandas.add(a);
+                a=a.pulled;
+            }
+            for(Panda p:freepandas){
+                for(Triple<Panda, Tile, Boolean> t:MovingPandas){
+                    if (p==t.first)t.third=true;
+                }
+            }
+            o.LetGo();
+        }
 
     }
-    public void ReadState(String path){
-
+    public void ReadState(String path) throws IOException {
+        File file = new File(path);
+        try (BufferedReader br = new BufferedReader(new FileReader(file))) {
+            String line;
+            while ((line = br.readLine()) != null) {
+               commandfile.add(line);
+            }
+        }
     }
     public void ReadCommand(){
-
+        if(commandindex!=commandfile.size()) {
+            answer=commandfile.get(commandindex);
+            commandindex++;
+        }
     }
     public void WriteState(){
-
+        //?
     }
     public void ClearAll(){
+        //state?
+        commandfile=new ArrayList<String>();
+        commandindex=0;
+        answer="";
 
+        random = false;
+
+        Tiles = new HashMap<String, Tile> ();
+
+        Animals=new HashMap<String, Animal>();
+
+        Things=new HashMap<String, Thing>();
+        MovingAnimals = new ArrayList<Triple<String,Integer,Integer>>();
+        pandacount = 0;
+        orancount = 0;
+        MovingOrangutans=new ArrayList<Triple<Orangutan,Tile,Boolean>>() ;
+
+        MovingPandas=new ArrayList<Triple<Panda,Tile,Boolean>> ();
+
+        MovingThings= new ArrayList<Thing>();
     }
     public void CTile(String name, int sides){
         Tile tile = new Tile();
