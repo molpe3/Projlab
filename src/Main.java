@@ -7,17 +7,27 @@ import java.util.*;
 public class Main extends Game{
 
 
-    public static void main(String[] args) {
+    /*public static void main(String[] args) {
 
         Main MainClass = new Main();
         MainClass.FillCommand();
         try {
-            MainClass.ReadState("valami");
+            MainClass.ReadState("teszt.txt");
         }
         catch (Exception e){
             System.out.println("Gebasz");
         }
+        MainClass.state=State.StageBuild;
         MainClass.SetTimer();
+        while (MainClass.state!=State.Cleanup){
+            MainClass.ExecuteState();
+        }
+        MainClass.ExecuteState();
+
+    }*/
+    public static void main(String[] args){
+        Main2 main2 = new Main2();
+        main2.Everything("teszt2.txt");
 
     }
 
@@ -25,21 +35,21 @@ public class Main extends Game{
 
     private State state;
 
-    private ArrayList<String> commandfile;
+    private ArrayList<String> commandfile = new ArrayList<>();
 
     private int commandindex=0;
 
     public boolean usefile=true;
 
-    private String answer;
+    private String answer="";
 
     private  boolean random = false;
 
-    private HashMap<String, Tile> Tiles;
+    private HashMap<String, Tile> Tiles = new HashMap<>();
 
-    private HashMap<String, Animal> Animals;
+    private HashMap<String, Animal> Animals = new HashMap<>();
 
-    private HashMap<String, Thing> Things;
+    private HashMap<String, Thing> Things = new HashMap<>();
 
     public class Double<T1,T2>{
         public T1 first;
@@ -91,16 +101,16 @@ public class Main extends Game{
 
     }
 
-    private HashMap<String, Double<Integer,State> > Commands;
+    private HashMap<String, Double<Integer,State> > Commands = new HashMap<>();
 
-    private ArrayList<Triple<String,Integer,Integer>> MovingAnimals;
+    private ArrayList<Triple<String,Integer,Integer>> MovingAnimals = new ArrayList<>();
     private int pandacount = 0;
     private int orancount = 0;
-    private ArrayList<Triple<Orangutan,Tile,Boolean>> MovingOrangutans;
+    private ArrayList<Triple<Orangutan,Tile,Boolean>> MovingOrangutans = new ArrayList<>();
 
-    private ArrayList<Triple<Panda,Tile,Boolean>> MovingPandas;
+    private ArrayList<Triple<Panda,Tile,Boolean>> MovingPandas = new ArrayList<>();
 
-    private ArrayList<Thing> MovingThings;
+    private ArrayList<Thing> MovingThings = new ArrayList<>();
 
 
     public void SetTimer(){
@@ -110,6 +120,8 @@ public class Main extends Game{
     public void ExecuteState(){
         switch (state) {
             case StageBuild:
+                System.out.println(commandfile.get(commandindex));
+
                 ST_Ask();
                 ST_Answer();
                 break;
@@ -149,59 +161,59 @@ public class Main extends Game{
                 state=State.Cleanup;
                 break;
 
-            case("CTile"):
+            case("Tile"):
                 CTile(parameters[1],Integer.parseInt(parameters[2]));
                 break;
 
-            case("CWardrobe"):
+            case("Wardrobe"):
                 CWardrobe(parameters[1],Integer.parseInt(parameters[2]));
                 break;
 
-            case("CWeakTile"):
+            case("WeakTile"):
                 CWeakTile(parameters[1],Integer.parseInt(parameters[2]));
                 break;
 
-            case("CChair"):
+            case("Chair"):
                 CChair(parameters[1],parameters[2]);
                 break;
 
-            case("CChocolateMachine"):
+            case("ChocolateMachine"):
                 CChocolateMachine(parameters[1],parameters[2]);
                 break;
 
-            case("CSlotMachine"):
+            case("SlotMachine"):
                 CSlotMachine(parameters[1],parameters[2]);
                 break;
 
-            case("CExit"):
+            case("Exit"):
                 CExit(parameters[1],Integer.parseInt(parameters[2]));
                 break;
 
-            case("CPanda"):
+            case("Panda"):
                 CPanda(parameters[1],parameters[2]);
                 break;
 
-            case("CJumpingPanda"):
+            case("JumpingPanda"):
                 CJumpingPanda(parameters[1],parameters[2]);
                 break;
 
-            case("CScaredPanda"):
+            case("ScaredPanda"):
                 CScaredPanda(parameters[1],parameters[2]);
                 break;
 
-            case("CTiredPanda"):
+            case("TiredPanda"):
                 CTiredPanda(parameters[1],parameters[2]);
                 break;
 
-            case("COrangutan"):
+            case("Orangutan"):
                 COrangutan(parameters[1],parameters[2]);
                 break;
 
-            case("SRandom"):
+            case("Random"):
                 SRandom(Boolean.parseBoolean(parameters[1]));
                 break;
 
-            case("SConnect"):
+            case("Connect"):
                 Tile t1 = Tiles.get(parameters[1]);
                 int i1 = Integer.parseInt(parameters[2]);
                 Tile t2 = Tiles.get(parameters[3]);
@@ -209,55 +221,55 @@ public class Main extends Game{
                 SConnect(t1,i1,t2,i2);
                 break;
 
-            case("SWardrobeConnect"):
+            case("WardrobeConnect"):
                 Wardrobe w1= (Wardrobe) Tiles.get(parameters[1]);
                 Wardrobe w2 = (Wardrobe) Tiles.get(parameters[2]);
                 SWardrobeConnect(w1,w2);
                 break;
 
-            case("SSubscribe"):
+            case("Subscribe"):
                 Panda p = (Panda) Animals.get(parameters[1]);
                 Thing t = Things.get(parameters[2]);
                 SSubscribe(p,t);
                 break;
 
-            case("SExitConnect"):
+            case("ExitConnect"):
                 Exit e = (Exit) Tiles.get(parameters[1]);
                 Tile t3 = Tiles.get(parameters[2]);
                 SExitConnect(e,t3);
                 break;
 
-            case("SWeakTileSetLife"):
+            case("WeakTileSetLife"):
                 WeakTile wt = (WeakTile)Tiles.get(parameters[1]);
                 int i3 = Integer.parseInt(parameters[2]);
                 SWeakTileSetLife(wt,i3);
                 break;
 
-            case("SWeakTileSetBroken"):
+            case("WeakTileSetBroken"):
                 WeakTile wt2 = (WeakTile)Tiles.get(parameters[1]);
                 boolean b = Boolean.parseBoolean(parameters[2]);
                 SWeakTileSetBroken(wt2,b);
                 break;
 
-            case("SOrangutanSetCooldown"):
+            case("OrangutanSetCooldown"):
                 Orangutan o = (Orangutan) Animals.get(parameters[1]);
                 int cooldown = Integer.parseInt(parameters[2]);
                 SOrangutanSetCooldown(o,cooldown);
                 break;
 
-            case("SOrangutanPoint"):
+            case("OrangutanPoint"):
                 Orangutan o2 = (Orangutan) Animals.get(parameters[1]);
                 int point = Integer.parseInt(parameters[2]);
                 SOrangutanPoint(o2,point);
                 break;
 
-            case("STiredPandaTired"):
+            case("TiredPandaTired"):
                 boolean tired = Boolean.parseBoolean(parameters[2]);
                 TiredPanda tp = (TiredPanda) Animals.get(parameters[1]);
                 STiredPandaTired(tp,tired);
                 break;
 
-            case("SSetPuller"):
+            case("SetPuller"):
                 Panda pulled = (Panda) Animals.get(parameters[1]);
                 Animal puller = Animals.get(parameters[2]);
                 SSetPuller(pulled,puller);
@@ -390,7 +402,7 @@ public class Main extends Game{
         }
     }
     public void WriteState(){
-        
+
         super.Print();
 
     }
