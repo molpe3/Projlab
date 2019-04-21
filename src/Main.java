@@ -17,6 +17,7 @@ public class Main extends Game{
         catch (Exception e){
             System.out.println("Gebasz");
         }
+        MainClass.SetTimer();
 
     }
 
@@ -101,6 +102,10 @@ public class Main extends Game{
 
     private ArrayList<Thing> MovingThings;
 
+
+    public void SetTimer(){
+        super.SetTimer(new Timer());
+    }
 
     public void ExecuteState(){
         switch (state) {
@@ -299,6 +304,7 @@ public class Main extends Game{
                     triple.third=false;
                 }
             }
+            IsLetGo(o);
         }
         if (MovingAnimalIndex==MovingAnimals.size()-1)MovingAnimalIndex=0;
         else MovingAnimalIndex++;
@@ -384,23 +390,9 @@ public class Main extends Game{
         }
     }
     public void WriteState(){
-        System.out.println("Csempék:");
-        for(Tile t:Tiles.values()){
-            t.Print();
-        }
-        System.out.println("Állatok:");
-        System.out.println("Pandák:");
-        for(Triple<Panda,Tile,Boolean> t:MovingPandas){
-            t.first.Print();
-        }
-        System.out.println("Orángutánok:");
-        for(Triple<Orangutan,Tile,Boolean> t:MovingOrangutans){
-            t.first.Print();
-        }
-        System.out.println("Tárgyak:");
-        for(Thing t:MovingThings){
-            t.Print();
-        }
+        
+        super.Print();
+
     }
     public void ClearAll(){
         //state?
@@ -424,20 +416,28 @@ public class Main extends Game{
 
         MovingThings= new ArrayList<Thing>();
     }
+    boolean entreance_get=false;
     public void CTile(String name, int sides){
         Tile tile = new Tile();
         tile.sides = sides;
         Tiles.put(name,tile);
+        super.AddTile(tile);
+        if (!entreance_get){
+            super.SetEntrance(tile);
+            entreance_get=true;
+        }
     }
     public void CWardrobe(String name, int sides){
         Wardrobe war = new Wardrobe();
         war.sides = sides;
         Tiles.put(name,war);
+        super.AddTile(war);
     }
     public void CWeakTile(String name, int sides){
         WeakTile wt = new WeakTile();
         wt.sides=sides;
         Tiles.put(name,wt);
+        super.AddTile(wt);
     }
     public void CChair(String name1, String name2){
         Chair chair = new Chair();
@@ -446,6 +446,7 @@ public class Main extends Game{
         chair.SetTile(tile);
         Things.put(name1,chair);
         MovingThings.add(chair);
+        super.AddThing(chair);
     }
     public void CChocolateMachine(String name1,String name2){
         ChocolateMachine cm = new ChocolateMachine();
@@ -454,6 +455,7 @@ public class Main extends Game{
         cm.SetTile(tile);
         Things.put(name1,cm);
         MovingThings.add(cm);
+        super.AddThing(cm);
     }
     public void CSlotMachine(String name1,String name2){
         SlotMachine sm = new SlotMachine();
@@ -462,11 +464,13 @@ public class Main extends Game{
         sm.SetTile(tile);
         Things.put(name1,sm);
         MovingThings.add(sm);
+        super.AddThing(sm);
     }
     public void CExit(String name, int sides){
         Exit exit = new Exit();
         exit.sides=sides;
         Tiles.put(name,exit);
+        super.AddTile(exit);
     }
     public void CPanda(String name, String tile){
         Panda p = new Panda();
@@ -477,6 +481,7 @@ public class Main extends Game{
         MovingAnimals.add(new Triple<String, Integer, Integer>(name,0,pandacount));
         pandacount++;
         MovingPandas.add(new Triple<>(p,t,true));
+        super.AddPanda(p);
     }
     public void CJumpingPanda(String name, String tile){
         JumpingPanda p = new JumpingPanda();
@@ -487,6 +492,7 @@ public class Main extends Game{
         MovingAnimals.add(new Triple<String, Integer, Integer>(name,0,pandacount));
         pandacount++;
         MovingPandas.add(new Triple<>(p,t,true));
+        super.AddPanda(p);
     }
     public void CScaredPanda(String name, String tile){
         ScaredPanda p = new ScaredPanda();
@@ -497,6 +503,7 @@ public class Main extends Game{
         MovingAnimals.add(new Triple<String, Integer, Integer>(name,0,pandacount));
         pandacount++;
         MovingPandas.add(new Triple<>(p,t,true));
+        super.AddPanda(p);
     }
     public void CTiredPanda(String name, String tile){
         TiredPanda p = new TiredPanda();
@@ -507,6 +514,7 @@ public class Main extends Game{
         MovingAnimals.add(new Triple<String, Integer, Integer>(name,0,pandacount));
         pandacount++;
         MovingPandas.add(new Triple<>(p,t,true));
+        super.AddPanda(p);
     }
     public void COrangutan(String name, String tile){
         Orangutan o = new Orangutan();
@@ -517,6 +525,7 @@ public class Main extends Game{
         MovingAnimals.add(new Triple<String, Integer, Integer>(name,1,orancount));
         orancount++;
         MovingOrangutans.add(new Triple<>(o,t,true));
+        super.AddOrangutan(o);
     }
     public void SRandom(boolean r){
         random=r;
@@ -582,4 +591,3 @@ public class Main extends Game{
 
 
 }
-
