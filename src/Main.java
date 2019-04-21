@@ -1,15 +1,23 @@
 import java.io.*;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.HashMap;
+import java.util.*;
 
 
 //Ha legyszi hasznalod a Game konstruktorat protectedbe, es ne legyen final
 //TODO fuggvenyek
 public class Main extends Game{
 
+
     public static void main(String[] args) {
-        System.out.println("Hello World!");
+
+        Main MainClass = new Main();
+        MainClass.FillCommand();
+        try {
+            MainClass.ReadState("valami");
+        }
+        catch (Exception e){
+            System.out.println("Gebasz");
+        }
+
     }
 
     public enum State {StageBuild, Simulation, RandomSimulation, Cleanup }
@@ -52,7 +60,33 @@ public class Main extends Game{
         }
     }
 
-    public void StartTest(){
+    public void FillCommand(){
+
+        Commands.put("start",new Double<Integer,State>(0,State.Simulation));
+        Commands.put("end",new Double<Integer, State>(0,State.Cleanup));
+        Commands.put("Tile",new Double<Integer, State>(0,State.StageBuild));
+        Commands.put("Wardrobe",new Double<Integer, State>(0,State.StageBuild));
+        Commands.put("WeakTile",new Double<Integer, State>(0,State.StageBuild));
+        Commands.put("Chair",new Double<Integer, State>(0,State.StageBuild));
+        Commands.put("ChocolateMachine",new Double<Integer, State>(0,State.StageBuild));
+        Commands.put("SlotMachine",new Double<Integer, State>(0,State.StageBuild));
+        Commands.put("Exit",new Double<Integer, State>(0,State.StageBuild));
+        Commands.put("Panda",new Double<Integer, State>(0,State.StageBuild));
+        Commands.put("JumpingPanda",new Double<Integer, State>(0,State.StageBuild));
+        Commands.put("ScaredPanda",new Double<Integer, State>(0,State.StageBuild));
+        Commands.put("TiredPanda",new Double<Integer, State>(0,State.StageBuild));
+        Commands.put("Orangutan",new Double<Integer, State>(0,State.StageBuild));
+        Commands.put("Random",new Double<Integer, State>(0,State.StageBuild));
+        Commands.put("Connect",new Double<Integer, State>(0,State.StageBuild));
+        Commands.put("WardrobeConnect",new Double<Integer, State>(0,State.StageBuild));
+        Commands.put("Subscribe",new Double<Integer, State>(0,State.StageBuild));
+        Commands.put("ExitConnect",new Double<Integer, State>(0,State.StageBuild));
+        Commands.put("WeakTileSetLife",new Double<Integer, State>(0,State.StageBuild));
+        Commands.put("WeakTileSetBroken",new Double<Integer, State>(0,State.StageBuild));
+        Commands.put("OrangutanSetCooldown",new Double<Integer, State>(0,State.StageBuild));
+        Commands.put("OrangutanPoint",new Double<Integer, State>(0,State.StageBuild));
+        Commands.put("TiredPandaTired",new Double<Integer, State>(0,State.StageBuild));
+        Commands.put("SetPuller",new Double<Integer, State>(0,State.StageBuild));
 
     }
 
@@ -71,13 +105,21 @@ public class Main extends Game{
     public void ExecuteState(){
         switch (state) {
             case StageBuild:
-
+                ST_Ask();
+                ST_Answer();
                 break;
             case Simulation:
+                SIAnimalAsk();
+                SIAnimalAnswer();
+                SIThingAsk();
+                SIThingAnswer("valami");
+                //LETGO-val mi lesz?
                 break;
             case RandomSimulation:
                 break;
             case Cleanup:
+                WriteState();
+                ClearAll();
                 break;
         }
     }
@@ -93,6 +135,15 @@ public class Main extends Game{
         if (parameters.length!= d.first+1)return;
 
         switch (parameters[0]){
+            case("start"):
+                if(random) state=State.RandomSimulation;
+                else state=State.Simulation;
+                break;
+
+            case("end"):
+                state=State.Cleanup;
+                break;
+
             case("CTile"):
                 CTile(parameters[1],Integer.parseInt(parameters[2]));
                 break;
@@ -209,22 +260,82 @@ public class Main extends Game{
         }
 
     }
+    int MovingAnimalIndex=0;
     public void SIAnimalAsk(){
+        //ONLY FOR USEFILE, TODO MANUAL
 
     }
-    public void SIAnimalAnswer(String type){
+    public void SIAnimalAnswer(){
+        //ONLY FOR USEFILE, TODO MANUAL
+        ReadCommand();
 
+        if (answer.equals("end")){
+            state=State.Cleanup;
+            return;
+        }
+
+        int direction = Integer.parseInt(answer);
+        int i1 = MovingAnimals.get(MovingAnimalIndex).second;
+        int i2 = MovingAnimals.get(MovingAnimalIndex).third;
+        if (i1==0){
+            Panda p = MovingPandas.get(i2).first;
+            Tile t = MovingPandas.get(i2).second;
+            boolean b = MovingPandas.get(i2).third;
+            if (!b)return;
+            p.Move(direction);
+            Tile newtile = MovingPandas.get(MovingAnimalIndex).first.GetTile();
+            MovingPandas.get(MovingAnimalIndex).second= newtile;
+            MovingPandas.get(MovingAnimalIndex).third=CheckIfCought(p);
+
+
+        }
+        else{
+            Orangutan o = MovingOrangutans.get(i2).first;
+            o.Move(direction);
+            Tile newtile = MovingOrangutans.get(MovingAnimalIndex).first.GetTile();
+            MovingOrangutans.get(i2).second=newtile;
+            for (Triple<Panda,Tile,Boolean> triple : MovingPandas){
+                if (newtile==triple.second){
+                    triple.third=false;
+                }
+            }
+        }
+        if (MovingAnimalIndex==MovingAnimals.size()-1)MovingAnimalIndex=0;
+        else MovingAnimalIndex++;
     }
+    public boolean CheckIfCought(Panda p){
+        Tile tile = p.GetTile();
+        for (Triple<Orangutan,Tile,Boolean> triple : MovingOrangutans){
+            if (tile==triple.second) return false;
+        }
+        return true;
+    }
+
+
+    int MovingThingIndex=0;
     public void SIThingAsk(){
-
+        //ONLY FOR USEFILE, TODO MANUAL
     }
     public void SIThingAnswer(String type){
+        //ONLY FOR USEFILE, TODO MANUAL
+        ReadCommand();
+        if(answer.equals("end")){
+            state=State.Cleanup;
+            return;
+        }
+        boolean action = Boolean.parseBoolean(answer);
+
+        if (action) MovingThings.get(MovingThingIndex).Notify();
+
+        if (MovingThingIndex==MovingAnimals.size()-1)MovingThingIndex=0;
+        else MovingThingIndex++;
 
     }
     public void SIRAnimalAnswer(String type){
-
+        //ONLY FOR USEFILE, TODO MANUAL
     }
     public void SIRThingAnswer(String type){
+        //ONLY FOR USEFILE, TODO MANUAL
 
     }
     public void IsLetGo(Orangutan o){
@@ -431,8 +542,28 @@ public class Main extends Game{
         a1.SetPulled(p1);
     }
     public void DeleteAnimal(Animal a){
-        a.Destroy();
+        String name="";
+        Set<String> keys = Animals.keySet();
+        for(String k:keys){
+                if (a == Animals.get(k)){
+                    name=k;
+                    break;
+            }
+        }
+
+        int i1,i2;
+        for (Triple<String,Integer,Integer> t:MovingAnimals){
+            if (t.first.equals(name)){
+                i1=t.second;i2=t.third;
+                if (i1==0) MovingPandas.remove(i2);
+                if (i2==1) MovingOrangutans.remove(i2);
+                break;
+            }
+        }
+
+        super.DeleteAnimal(a);
     }
 
 
 }
+
