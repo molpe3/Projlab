@@ -384,7 +384,23 @@ public class Main extends Game{
         }
     }
     public void WriteState(){
-        //?
+        System.out.println("Csempék:");
+        for(Tile t:Tiles.values()){
+            t.Print();
+        }
+        System.out.println("Állatok:");
+        System.out.println("Pandák:");
+        for(Triple<Panda,Tile,Boolean> t:MovingPandas){
+            t.first.Print();
+        }
+        System.out.println("Orángutánok:");
+        for(Triple<Orangutan,Tile,Boolean> t:MovingOrangutans){
+            t.first.Print();
+        }
+        System.out.println("Tárgyak:");
+        for(Thing t:MovingThings){
+            t.Print();
+        }
     }
     public void ClearAll(){
         //state?
