@@ -77,6 +77,7 @@ public class Panda extends Animal implements Observer, Steppable {
 	
 	/**
 	* returns with the animal that pulls it
+	* @return puller the pulling animal
 	*/
 	public Animal GetPuller(){
 		return puller;
@@ -84,6 +85,7 @@ public class Panda extends Animal implements Observer, Steppable {
 	
 	/**
 	* sets the animal that pulls it
+	* @param a the animal we're setting as puller
 	*/
 	public void SetPuller(Animal a){
 		puller=a;
