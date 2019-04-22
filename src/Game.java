@@ -8,13 +8,13 @@ import java.util.Comparator;
 public final class Game implements Printable{
 	private static Game game;
 	private Game() {}
-	private Timer timer;
-	private static ArrayList<Orangutan> activeorangutans;
-	private static ArrayList<Orangutan> orangutans;
-	private static ArrayList<Panda> pandas;
-	private static ArrayList<Tile> tiles;
-	private static ArrayList<Thing> things;
-	private Tile entrance;
+	protected Timer timer;
+	protected static ArrayList<Orangutan> activeorangutans;
+	protected static ArrayList<Orangutan> orangutans;
+	protected static ArrayList<Panda> pandas;
+	protected static ArrayList<Tile> tiles;
+	protected static ArrayList<Thing> things;
+	protected Tile entrance;
 	
 	/**
 	* Prints out that the game has ended, then sorts orangutans by score and prints out their name and score.
