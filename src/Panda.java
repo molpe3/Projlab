@@ -42,7 +42,8 @@ public class Panda extends Animal implements Observer, Steppable {
 	}
 	
 	/**
-	* Collides with an orangutan, getting caught by it if it's eligible to catch pandas (it made 3+ steps since it was robbed)
+	* Collides with an orangutan, getting caught by it if it's eligible to catch pandas
+	* (the orangutan made 3+ steps since it was robbed)
 	* @param o the orangutan it's colliding with
 	*/
 	public boolean CollideWithOrangutan(Orangutan o){
@@ -80,9 +81,17 @@ public class Panda extends Animal implements Observer, Steppable {
 	public Animal GetPuller(){
 		return puller;
 	}
+	
+	/**
+	* sets the animal that pulls it
+	*/
 	public void SetPuller(Animal a){
 		puller=a;
 	}
+	
+	/**
+	* unsubscribes from the observables before getting deleted
+	*/
 	public void Destroy(){
 		for (Observable o:observables){
 			o.Detach(this);
@@ -92,6 +101,9 @@ public class Panda extends Animal implements Observer, Steppable {
 		Game.getInstance().DeleteAnimal(this);
 	}
 	
+	/**
+	* moves randomly on timer ticks
+	*/
 	public void Step() {
 		//tiredpanda felülírja!!!!
 		Random rand=new Random();
@@ -100,12 +112,20 @@ public class Panda extends Animal implements Observer, Steppable {
 			Move(rand.nextInt(sides));
 		}
 	}
+	
+	/**
+	* subclasses implement these with expanded functionality
+	*/
 	public void GetScared(){}
 	public void Jump(){}
 	public void Sit(){}
 	public void Update(Observable ob) {
 	
 	}
+	
+	/**
+	* disbands the queue; puller no longer pulls, pulled disbands as well
+	*/
 	public void Disband(){
 		if (puller!=null)
 			puller.SetPulled(null);
