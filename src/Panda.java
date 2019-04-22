@@ -1,5 +1,11 @@
 import java.util.ArrayList;
 import java.util.Random;
+
+/**
+* Különböző tulajdonságokkal bíró pandák közös tulajdonságait összefoglaló absztrakt ősosztály.
+* A panda véletlenszerűen kószál a játéktéren, amíg egy orángután meg nem fogja. (A protóban determinisztikusan is mozgatható.)
+* Miután megfogták, követi az őt fogó állatot, amíg ki nem vezetik a játéktérről, fel nem bomlik a sor, vagy meg nem hal.
+*/
 public class Panda extends Animal implements Observer, Steppable {
 	protected Animal puller;
 	private ArrayList<Observable> observables;
@@ -7,6 +13,11 @@ public class Panda extends Animal implements Observer, Steppable {
 		this.name=name;
 		observables=new ArrayList<Observable>();
 	}
+	
+	/**
+	* Moves to an adjacent tile, collides with the occupying animal if it's occupied.
+	* @param side the side of the current tile which the target tile is adjacent to
+	*/
 	public void Move(int side) {
 		Tile start=tile;
 		Tile t2=tile.GetNeighbor(side);
@@ -21,9 +32,19 @@ public class Panda extends Animal implements Observer, Steppable {
 			}
 		}
 	}
+	
+	/**
+	* Collides with a panda, always preventing movement.
+	* @param p the panda it's colliding with
+	*/
 	public boolean CollideWithPanda(Panda p){		
 		return false;
 	}
+	
+	/**
+	* Collides with an orangutan, getting caught by it if it's eligible to catch pandas (it made 3+ steps since it was robbed)
+	* @param o the orangutan it's colliding with
+	*/
 	public boolean CollideWithOrangutan(Orangutan o){
 		if (puller==null&&o.GetStepssincerobbed()>3){
 			CaughtbyOrangutan(o);
@@ -31,6 +52,13 @@ public class Panda extends Animal implements Observer, Steppable {
 		}
 		return false;
 	}
+	
+	/**
+	* Gets caught by an orangutan, becoming the first panda in its pulled queue.
+	* Becomes the puller of the previous queue leader if one existed.
+	* Also swaps tiles with the orangutan.
+	* @param o the orangutan catching it
+	*/
 	public  void CaughtbyOrangutan(Orangutan o){	
 		Tile oran_tile = o.GetTile();
         Panda lead_panda = o.GetPulled();
@@ -45,6 +73,10 @@ public class Panda extends Animal implements Observer, Steppable {
         this.SetTile(oran_tile);
         oran_tile.SetAnimal(this);
 	}
+	
+	/**
+	* returns with the animal that pulls it
+	*/
 	public Animal GetPuller(){
 		return puller;
 	}
@@ -61,9 +93,9 @@ public class Panda extends Animal implements Observer, Steppable {
 	}
 	
 	public void Step() {
-		//tiredpanda fel�l�rja!!!!
+		//tiredpanda felülírja!!!!
 		Random rand=new Random();
-		if (puller==null) {	//randomiz�l�s ki/be kapcsolhat� legyen
+		if (puller==null) {	//randomizálás ki/be kapcsolható legyen
 			int sides=tile.GetSides();
 			Move(rand.nextInt(sides));
 		}
