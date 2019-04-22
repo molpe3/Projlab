@@ -148,7 +148,9 @@ public class Panda extends Animal implements Observer, Steppable {
 			pulled.Disband();
 		}
 	}
-	
+	public void AddObservable(Observable o) {
+		observables.add(o);
+	}
 	public void Print()
 	{
 		
