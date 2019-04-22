@@ -1,3 +1,9 @@
+/**
+* A játékos utasításainak megfelelően mozog. Ha szabad pandával azonos mezőre lép, megfogja azt.
+* A pandák kijárathoz vitelével pontokat szerez. A pandákat bármikor elengedheti.
+* Ha más orángutánnal ütközik, elrabolja a pandáit. A másik orángután ilyenkor 3 lépés megtételéig nem szerezhet pandákat
+*/
+
 public class Orangutan extends Animal {
 	private int points;
 	private int stepssincerobbed;
@@ -9,8 +15,17 @@ public class Orangutan extends Animal {
 		pulled=null;
 		tile=null;
 	}
+	
+	/**
+	* Increases the orangutan's points by 1.
+	*/
 	public void Addpoint() {
 		points++;}
+	
+	/**
+	* Moves the orangutan to an adjacent tile.
+	* @param side the current tile's side that is adjacent to the target tile
+	*/
 	public void Move(int side) {
 		stepssincerobbed++;
 		Tile start=tile;
@@ -28,10 +43,21 @@ public class Orangutan extends Animal {
 			}
 		}
 	}
+	
+	/**
+	* Collides with a panda, potentially adding it to the pulled queue
+	* @param p the panda it's colliding with
+	*/
 	public boolean CollideWithPanda(Panda p){
 		p.CaughtbyOrangutan(this);
 		return true;
 	}
+	
+	/**
+	* Collides with an orangutan.
+	* The other orangutan may steal its pandas if it made at least 3 steps since it was robbed last time.
+	* @param o the orangutan it's running into
+	*/
 	public boolean CollideWithOrangutan(Orangutan o){ 
 		
 		if (pulled!=null&&o.stepssincerobbed>3){
@@ -47,34 +73,59 @@ public class Orangutan extends Animal {
 		}
 		return false;
 	}
+	
+	/**
+	* Lets go of all pulled pandas
+	*/
 	public void LetGo()
 	{
 		Disband();
 	}
+	
+	/**
+	* returns with the orangutan's score
+	*/
 	public int GetPoints() {
 		return points;
 	}
+	
+	/**
+	* sets the orangutan's number of points
+	* @param points the value to be set
+	*/
 	public void SetPoints(int points)
 	{
 		this.points=points;
 	}
+	
+	/**
+	* returns with the number of steps the orangutan made since another stole its pandas
+	*/
 	public int GetStepssincerobbed() {
 		return stepssincerobbed;
 	}
+	
+	/**
+	* sets the number of steps the orangutan made since its pandas were stolen
+	*/
 	public void SetStepssincerobbed(int stepssincerobbed) {
 		this.stepssincerobbed = stepssincerobbed;
 	}
+	
+	/**
+	* prints all relevant information
+	*/
 	public void Print()
 	{
 		System.out.println("\t"+this.name);
 		System.out.println("\tCsempe:");
 		System.out.println("\t\t"+tile.GetName());
-		System.out.println("\tH�zott panda:");
+		System.out.println("\tHúzott panda:");
 		if (pulled!=null)
 			System.out.println("\t\t"+pulled.GetName());
-		System.out.println("\tRabl�s �ta eltelt l�p�sek:");
+		System.out.println("\tRablás óta eltelt lépések:");
 		System.out.println("\t\t"+stepssincerobbed);
-		System.out.println("\tPontsz�m:");
+		System.out.println("\tPontszám:");
 		System.out.println("\t\t"+points);
 	}
 }
