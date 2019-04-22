@@ -1,3 +1,5 @@
+//komment teszt
+
 public abstract class Animal implements Printable{
 	protected Panda pulled;
 	protected Tile tile;
