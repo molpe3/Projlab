@@ -43,6 +43,7 @@ public class Chair extends Thing {
 	
 	/**
 	* prints all relevant information
+	* this includes name, tile, occupation status and observers
 	*/
 	public void Print() {
 		System.out.println("\t"+this.name);
