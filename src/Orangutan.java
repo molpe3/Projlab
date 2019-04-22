@@ -84,6 +84,7 @@ public class Orangutan extends Animal {
 	
 	/**
 	* returns with the orangutan's score
+	* @return points the number of points the orangutan has gathered
 	*/
 	public int GetPoints() {
 		return points;
@@ -100,6 +101,7 @@ public class Orangutan extends Animal {
 	
 	/**
 	* returns with the number of steps the orangutan made since another stole its pandas
+	* @return stepssincerobbed the number of steps it has made since the theft
 	*/
 	public int GetStepssincerobbed() {
 		return stepssincerobbed;
@@ -107,6 +109,7 @@ public class Orangutan extends Animal {
 	
 	/**
 	* sets the number of steps the orangutan made since its pandas were stolen
+	* @param stepssincerobbed the new number of steps made since it was robbed
 	*/
 	public void SetStepssincerobbed(int stepssincerobbed) {
 		this.stepssincerobbed = stepssincerobbed;
@@ -114,6 +117,7 @@ public class Orangutan extends Animal {
 	
 	/**
 	* prints all relevant information
+	* this includes name, tile, pulled, number of steps since it was robbed, and score
 	*/
 	public void Print()
 	{
