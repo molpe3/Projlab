@@ -1,5 +1,10 @@
 import java.util.ArrayList;
 import java.util.Comparator;
+
+/**
+* A j√°t√©k indit√°s√°√©rt, befejez√©s√©√©rt √©s tartalmaz√°s√°√©rt felel≈ës singleton.
+*/
+
 public final class Game implements Printable{
 	private static Game game;
 	private Game() {}
@@ -10,24 +15,45 @@ public final class Game implements Printable{
 	private static ArrayList<Tile> tiles;
 	private static ArrayList<Thing> things;
 	private Tile entrance;
+	
+	/**
+	* Prints out that the game has ended, then sorts orangutans by score and prints out their name and score.
+	*/
 	public void EndGame() {
-		System.out.println("J·tÈk vÈge!");
+		System.out.println("J√°t√©k v√©ge!");
 		orangutans.sort(Comparator.comparing(Orangutan::GetPoints));
 		int i=1;
 		for (Orangutan o:orangutans) {
 			System.out.println("\n\t"+i+". "+o.GetName()+":"+o.GetPoints());
+			//itt nem k√©ne i-t inkrement√°lni
 		}
 	}
+	
+	/**
+	* Checks whether the game has ended
+	* The game is over when there are no more active orangutans or pandas in the game.
+	*/
 	public void CheckEndGame() {
 		if (activeorangutans.isEmpty()||pandas.isEmpty()){
 			EndGame();
 		}
 	}
+	
+	/**
+	* Deletes an animal, then checks whether the game should end
+	* @param a the animal to delete
+	*/
 	public void DeleteAnimal(Animal a) {
 		activeorangutans.remove(a);
 		pandas.remove(a);
 		CheckEndGame();
 	}
+	
+	/**
+	* returns with the current instance of game
+	* if there's no active game instance, it creates a new one
+	* @return game the game instance
+	*/
 	public static Game getInstance() {
         if(game == null) {
             game = new Game();
@@ -39,105 +65,160 @@ public final class Game implements Printable{
         }
         return game;
     }
+	/**
+	* Adds an orangutan to the list of active orangutans.
+	* @param o the orangutan to be added
+	*/
 	public void AddOrangutan(Orangutan o) {
 		activeorangutans.add(o);
 		orangutans.add(o);
 	}
+	
+	/**
+	* Adds a panda to the list of pandas.
+	* @param p the panda to be added
+	*/
 	public void AddPanda(Panda p) {
 		pandas.add(p);
 	}
+	
+	/**
+	* Adds a tile to the list of tiles.
+	* @param t the tile to be added
+	*/
 	public void AddTile(Tile t) {
 		tiles.add(t);
 	}
+	
+	/**
+	* returns with the entrance
+	* @return entrance the entrance orangutans return to after exiting
+	*/
 	public Tile GetEntrance() {
 		return entrance;
 	}
+	
+	/**
+	* Adds a thing (chocolate machine, slot machine or chair) to the list of things.
+	* @param t the thing to be added
+	*/
 	public void AddThing(Thing t) {
 		things.add(t);
 	}
+	
+	/**
+	* sets the entrance
+	* @param entrance the tile we want to turn into the new entrance
+	*/
 	public void SetEntrance(Tile entrance) {
 		this.entrance=entrance;
 	}
+	
+	/**
+	* sets the timer
+	* @param timer the timer that governs the behavior of steppables
+	*/
 	public void SetTimer(Timer timer) {
 		this.timer = timer;
 	}
+	
+	/**
+	* returns with the timer
+	* @return timer the timer that governs the behavior of steppables
+	*/
 	public Timer GetTimer() {
 		return timer;
 	}
+	
+	/**
+	* returns with a list of active orangutans
+	* orangutans are active if they haven't died yet
+	* @return activeorangutans returns with an ArrayList containing active orangutans
+	*/
 	public static ArrayList<Orangutan> GetActiveorangutans() {
 		return activeorangutans;
 	}
+	
+	/**
+	* returns with a list of pandas
+	* @return pandas returns with an ArrayList containing all pandas currently in the game
+	*/
 	public static ArrayList<Panda> GetPandas() {
 		return pandas;
 	}
+	
+	/**
+	* Prints out all relevant information.
+	* This includes randomization status, tiles listed by type, animals listed by type and things listed by type.
+	*/
 	public void Print() {
-		System.out.println("Randomiz·l·s:");
+		System.out.println("Randomiz√°l√°s:");
 		System.out.println("\tBe/ki");
-		System.out.println("CsempÈk");
-		System.out.println("Sima CsempÈk");
+		System.out.println("Csemp√©k");
+		System.out.println("Sima Csemp√©k");
 		for (Tile t:tiles) {
 			if (t.getClass()==Tile.class) {
 				t.Print();
 			}
 		}
-		System.out.println("Gyenge CsempÈk");
+		System.out.println("Gyenge Csemp√©k");
 		for (Tile t:tiles) {
 			if (t.getClass()==WeakTile.class) {
 				t.Print();
 			}
 		}
-		System.out.println("Kij·ratok:");
+		System.out.println("Kij√°ratok:");
 		for (Tile t:tiles) {
 			if (t.getClass()==Exit.class) {
 				t.Print();
 			}
 		}
-		System.out.println("SzekrÈnyek:");
+		System.out.println("Szekr√©nyek:");
 		for (Tile t:tiles) {
 			if (t.getClass()==Wardrobe.class) {
 				t.Print();
 			}
 		}
-		System.out.println("¡llatok:");
-		System.out.println("Pand·k:");
-		System.out.println("Ijedos pand·k:");
+		System.out.println("√Ållatok:");
+		System.out.println("Pand√°k:");
+		System.out.println("Ijedos pand√°k:");
 		for (Panda p:pandas) {
 			if (p.getClass()==ScaredPanda.class) {
 				p.Print();
 			}
 		}
-		System.out.println("UgrÛ pand·k:");
+		System.out.println("Ugr√≥ pand√°k:");
 		for (Panda p:pandas) {
 			if (p.getClass()==JumpingPanda.class) {
 				p.Print();
 			}
 		}
-		System.out.println("F·radÈkony pand·k:");
+		System.out.println("F√°rad√©kony pand√°k:");
 		for (Panda p:pandas) {
 			if (p.getClass()==TiredPanda.class) {
 				p.Print();
 			}
 		}
-		System.out.println("Or·ngut·nok:");
+		System.out.println("Or√°ngut√°nok:");
 		for (Orangutan o:activeorangutans) {
 			if (o.getClass()==Orangutan.class) {
 				o.Print();
 			}
 		}
-		System.out.println("T·rgyak:");
+		System.out.println("T√°rgyak:");
 		System.out.println("Fotelek:");
 		for (Thing t:things) {
 			if (t.getClass()==Chair.class) {
 				t.Print();
 			}
 		}
-		System.out.println("J·tÈkgÈpek:");
+		System.out.println("J√°t√©kg√©pek:");
 		for (Thing t:things) {
 			if (t.getClass()==SlotMachine.class) {
 				t.Print();
 			}
 		}
-		System.out.println("Csokiautomat·k:");
+		System.out.println("Csokiautomat√°k:");
 		for (Thing t:things) {
 			if (t.getClass()==ChocolateMachine.class) {
 				t.Print();
