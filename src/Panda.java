@@ -114,11 +114,23 @@ public class Panda extends Animal implements Observer, Steppable {
 	}
 	
 	/**
-	* subclasses implement these with expanded functionality
+	* a subclass implements this with expanded functionality
 	*/
 	public void GetScared(){}
+	
+	/**
+	* a subclass implements this with expanded functionality
+	*/
 	public void Jump(){}
+	
+	/**
+	* a subclass implements this with expanded functionality
+	*/
 	public void Sit(){}
+	
+	/**
+	* multiple subclasses implement this with expanded functionality
+	*/
 	public void Update(Observable ob) {
 	
 	}
